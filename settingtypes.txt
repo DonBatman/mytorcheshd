@@ -1,0 +1,6 @@
+
+#Enable the double tap sprint
+mytorches.torch_used(Enable to use timer) bool true
+
+#Change the time of the stack 
+mytorches.torch_time (Set lenght of time for torch to burn out) int 3600
