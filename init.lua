@@ -461,44 +461,34 @@ minetest.override_item("default:torch", {
 			{-0.0625, 0.125, -0.095, 0.0625, 0.3125, 0.095},
 		}
 	},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.0625, -0.5, -0.03, 0.0625, 0.4375, 0.03},
-			{-0.03, -0.5, -0.0625, 0.03, 0.4375, 0.0625},
-			{-0.03, 0.3125, -0.03, 0.03, 0.5, 0.03},
-			{-0.095, 0.125, -0.0625, 0.095, 0.375, 0.0625},
-			{-0.0625, 0.125, -0.095, 0.0625, 0.3125, 0.095},
-		}
-	},
-on_place = function(itemstack, placer, pointed_thing)
-	local timer = minetest.get_node_timer(pointed_thing.above)
-		timer:start(torch_timer)
-	if pointed_thing.type ~= "node" then
-		return itemstack
-	end
-
-	local p0 = pointed_thing.under
-	local p1 = pointed_thing.above
-	local dir = {
-		x = p1.x - p0.x,
-		y = p1.y - p0.y,
-		z = p1.z - p0.z
-		}
-		
-	local that = minetest.get_node(pointed_thing.above).name
-	if that == "air" then
-		if p0.y>p1.y then
-			minetest.add_node(p1, {name="mytorcheshd:torch_ceiling"})
-		elseif p0.y<p1.y then
-			minetest.add_node(p1, {name="default:torch"})
-		else
-			minetest.add_node(p1, {name="mytorcheshd:torch_wall", param2=minetest.dir_to_facedir(placer:get_look_dir())})
+	on_place = function(itemstack, placer, pointed_thing)
+		local timer = minetest.get_node_timer(pointed_thing.above)
+			timer:start(torch_timer)
+		if pointed_thing.type ~= "node" then
+			return itemstack
 		end
-	end
-	itemstack:take_item()
-		return itemstack
-end,
+	
+		local p0 = pointed_thing.under
+		local p1 = pointed_thing.above
+		local dir = {
+			x = p1.x - p0.x,
+			y = p1.y - p0.y,
+			z = p1.z - p0.z
+			}
+			
+		local that = minetest.get_node(pointed_thing.above).name
+		if that == "air" then
+			if p0.y>p1.y then
+				minetest.add_node(p1, {name="mytorcheshd:torch_ceiling"})
+			elseif p0.y<p1.y then
+				minetest.add_node(p1, {name="default:torch"})
+			else
+				minetest.add_node(p1, {name="mytorcheshd:torch_wall", param2=minetest.dir_to_facedir(placer:get_look_dir())})
+			end
+		end
+		itemstack:take_item()
+			return itemstack
+	end,
 })
 
 minetest.register_node("mytorcheshd:torch_wall", {
